@@ -19,7 +19,10 @@ Checked 2026-08-25. Branch links remain useful for updates; commit links record 
 ### API libraries and working plugin infrastructure
 
 - [`OpenCPN/opencpn-libs` at `af6fc2b`](https://github.com/OpenCPN/opencpn-libs/tree/af6fc2b616bf21066d81e1991983c42a73b2e2d8) — common plugin libraries and versioned API headers/import libraries, commonly consumed as a submodule.
+- [`api-18/CMakeLists.txt`](https://github.com/OpenCPN/opencpn-libs/blob/af6fc2b616bf21066d81e1991983c42a73b2e2d8/api-18/CMakeLists.txt) — verifies API 1.18, its declared minimum OpenCPN version, the `ocpn::api` target, and the MSVC wx32 import library used by the first real template.
 - [`api-21/CMakeLists.txt`](https://github.com/OpenCPN/opencpn-libs/blob/af6fc2b616bf21066d81e1991983c42a73b2e2d8/api-21/CMakeLists.txt) — verifies the `ocpn::api` target, API/minimum-host variables, include path, and current MSVC import library selection for API 1.21.
+- [`jkuhnen/chartinspector_pi` at `1a037c5`](https://github.com/jkuhnen/chartinspector_pi/tree/1a037c5b86d7d7c41e10cdd48eb8f6433c3e651f) — working API-18 plugin inspected for CMake, lifecycle, centralized style, DAY/DUSK/NIGHT, metadata/TGZ packaging, and `.devkit` guidance. Its experimental vector-query code is explicitly excluded from the generic template.
+- [`jkuhnen/latituderuler_pi` at `71b5bd0`](https://github.com/jkuhnen/latituderuler_pi/tree/71b5bd02ca8cca611c61766ef2f310c8d19f7336) — small working API-18 plugin inspected to distinguish the minimum adapter/build/package structure from Chart Inspector-specific complexity.
 - [`jongough/testplugin_pi` at `dfde2b8`](https://github.com/jongough/testplugin_pi/tree/dfde2b83c94da31b27bc32ad9743d1aad41b8a6e) — current FE2 example inspected for multi-platform build/package structure. It is one community workflow, not the OpenCPN API specification.
 - [`Rasbats/shipdriver_pi` at `d6d6023`](https://github.com/Rasbats/shipdriver_pi/tree/d6d6023d32e94fd9ffe09c243d5afe5eaa811383) — maintained alternative workflow example inspected for plugin setup, API library selection, dependencies, and distribution configuration.
 

@@ -1,19 +1,30 @@
-# Future reusable plugin template
+# Reusable OpenCPN plugin template
 
-This directory intentionally contains no plugin source template yet.
+`plugin/` is the first real DevKit plugin template. It is a deliberately small C++11/OpenCPN API 1.18 skeleton derived from two working plugins and cross-checked against current upstream infrastructure.
 
-A future reference template is expected to provide:
+## Provenance snapshot
 
-- verified CMake configuration based on one currently working OpenCPN plugin build family;
-- pinned `opencpn-libs` integration and explicit plugin API/minimum-host policy;
-- target-aware `metadata.xml.in` generation and packaging;
-- a separated adapter, domain/data/query, wxWidgets UI, overlay, and resource layout;
-- a centralized semantic style layer with DAY/DUSK/NIGHT support;
-- repository-specific `AGENTS.md` instructions;
-- documented configure/build/test/package scripts for supported targets;
-- a CI skeleton that builds and retains review artifacts without releasing ordinary PRs;
-- a minimal placeholder plugin implementation sufficient to prove lifecycle, packaging, and load/unload behavior.
+Inspected on 2026-08-25:
 
-The template must be derived from proven, current OpenCPN plugin infrastructure and tested against its declared OpenCPN/API/wxWidgets/toolchain matrix. It must not invent a parallel build, packaging, metadata, provider, or API ecosystem. FE2, ShipDriver/Alternative Workflow, current in-tree plugins, `opencpn-libs`, the catalog schema, and the target API headers should be compared before selecting a base.
+- [Chart Inspector `main` at `1a037c5`](https://github.com/jkuhnen/chartinspector_pi/tree/1a037c5b86d7d7c41e10cdd48eb8f6433c3e651f) for API-18/CMake integration, toolbar lifecycle, centralized scheme-aware style, packaging, and development-only `.devkit` guidance;
+- [Latitude Ruler `main` at `71b5bd0`](https://github.com/jkuhnen/latituderuler_pi/tree/71b5bd02ca8cca611c61766ef2f310c8d19f7336) for the minimal API-18 adapter, deterministic toolbar teardown, compact build, and package structure;
+- [`opencpn-libs` `main` at `af6fc2b`](https://github.com/OpenCPN/opencpn-libs/tree/af6fc2b616bf21066d81e1991983c42a73b2e2d8), including `api-18` and `WindowsHeaders`;
+- [OpenCPN `master` at `d2b255f`](https://github.com/OpenCPN/OpenCPN/tree/d2b255f1ba745ad969d70f78e663580c14a89438) and the current plugin API declarations;
+- [`OpenCPN/plugins` `master` at `6726fc3`](https://github.com/OpenCPN/plugins/tree/6726fc3c653b790183713bfb0856b6412d2a2592) for current metadata schema and packaging guidance;
+- [ShipDriver `master` at `d6d6023`](https://github.com/Rasbats/shipdriver_pi/tree/d6d6023d32e94fd9ffe09c243d5afe5eaa811383) as a maintained alternative build-family cross-check.
 
-Before adding template files, open a focused issue that defines the chosen upstream commit(s), supported targets, ownership/lifetime model, exact build/package commands, validation matrix, licensing, and migration/update strategy. A compiling placeholder alone is not enough: the produced archive must install, load, disable, and unload in the intended OpenCPN runtimes.
+The references agree on CMake 3.15, C++11, API 1.18 through `opencpn-libs/api-18`, MSVC definitions, Windows headers, generated metadata, and TGZ packaging. The template keeps that common behavior and removes feature-specific code and dependencies.
+
+## Intentional scope
+
+The placeholder registers one checkable toolbar tool, redraws its generated bitmap from a centralized OpenCPN DAY/DUSK/NIGHT palette, and removes the tool during `DeInit()`. This is enough to prove the skeleton without pretending to be an application.
+
+The template does not contain Chart Inspector's experimental vector-query API, Latitude Ruler's overlay/rendering logic, provider-specific code, chart parsing, OpenGL, persistence, networking, device access, CI workflows, release automation, or production distribution configuration.
+
+API 1.18 is the initial compatibility baseline because both reference plugins use it successfully and pin the same `opencpn-libs` commit. It is not the newest upstream API and is not universally preferred. A project may deliberately upgrade after checking its minimum OpenCPN version, new base class/header, import library, ABI, metadata, and runtime matrix.
+
+## Maturity
+
+This is a reviewed bootstrap template, not a certified or universally portable plugin framework. Its static/template structure and locally available Windows build path should be validated for every change. Every generated plugin still requires installation, load/enable/disable/unload, restart, and DAY/DUSK/NIGHT testing in the intended OpenCPN runtime before release.
+
+See [`plugin/README.md`](plugin/README.md) for copying, placeholders, submodule bootstrap, build/package commands, artifact inspection, and project-specific decisions.

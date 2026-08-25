@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin version="1">
+  <name>@PLUGIN_DISPLAY_NAME@</name>
+  <version>@PACKAGE_VERSION@</version>
+  <release>0</release>
+  <summary>Minimal OpenCPN plugin generated from the DevKit template</summary>
+
+  <api-version>@OCPN_API_VERSION@</api-version>
+  <open-source>yes</open-source>
+  <author>@PLUGIN_AUTHOR@</author>
+  <source>@PLUGIN_SOURCE_URL@</source>
+  <info-url>@PLUGIN_SOURCE_URL@</info-url>
+  <description>
+    @PLUGIN_DISPLAY_NAME@ is an OpenCPN plugin initialized from the minimal DevKit template. Replace this description with the plugin's real purpose before distribution.
+  </description>
+
+  <target>@OCPN_PACKAGE_TARGET@</target>
+  <target-version>@OCPN_TARGET_VERSION@</target-version>
+  <target-arch>@OCPN_TARGET_ARCH@</target-arch>
+  <tarball-url>@PACKAGE_TARBALL_URL@</tarball-url>
+</plugin>

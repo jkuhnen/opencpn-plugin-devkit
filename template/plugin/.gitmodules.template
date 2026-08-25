@@ -1,0 +1,11 @@
+# Reference input only. Do not rename this file inside opencpn-plugin-devkit.
+# The commands in README.md create the real .gitmodules and pinned gitlinks in
+# a generated plugin repository.
+[submodule ".devkit"]
+	path = .devkit
+	url = https://github.com/jkuhnen/opencpn-plugin-devkit.git
+	branch = main
+[submodule "opencpn-libs"]
+	path = opencpn-libs
+	url = https://github.com/OpenCPN/opencpn-libs.git
+	branch = main
