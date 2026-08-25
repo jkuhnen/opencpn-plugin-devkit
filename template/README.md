@@ -13,7 +13,7 @@ Inspected on 2026-08-25:
 - [`OpenCPN/plugins` `master` at `6726fc3`](https://github.com/OpenCPN/plugins/tree/6726fc3c653b790183713bfb0856b6412d2a2592) for current metadata schema and packaging guidance;
 - [ShipDriver `master` at `d6d6023`](https://github.com/Rasbats/shipdriver_pi/tree/d6d6023d32e94fd9ffe09c243d5afe5eaa811383) as a maintained alternative build-family cross-check.
 
-The references agree on CMake 3.15, C++11, API 1.18 through `opencpn-libs/api-18`, MSVC definitions, Windows headers, generated metadata, and TGZ packaging. The template keeps that common behavior and removes feature-specific code and dependencies.
+Chart Inspector and Latitude Ruler share the selected CMake 3.15, C++11, API 1.18 through `opencpn-libs/api-18`, MSVC definitions, Windows headers, generated metadata, and TGZ packaging pattern. ShipDriver and current upstream sources were compatibility and infrastructure cross-checks; they do not all use this same baseline. The template keeps the behavior common to the two local proven references and removes feature-specific code and dependencies.
 
 ## Intentional scope
 

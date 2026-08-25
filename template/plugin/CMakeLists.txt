@@ -13,7 +13,7 @@ set(PLUGIN_SOURCE_URL "{{SOURCE_URL}}")
 set(PACKAGE_TARBALL_URL "{{TARBALL_URL}}")
 set(OCPN_API_VERSION "1.18")
 
-find_package(wxWidgets REQUIRED COMPONENTS base core aui)
+find_package(wxWidgets REQUIRED COMPONENTS base core)
 include(${wxWidgets_USE_FILE})
 
 configure_file(
