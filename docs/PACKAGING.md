@@ -13,9 +13,11 @@ A plugin project may maintain a `metadata.xml.in` template and generate a concre
 The current catalog schema includes:
 
 - identity: `name`, `version`, `release`, `summary`;
-- compatibility: `api-version`, `target`, optional `build-target`/`build-gtk`, `target-version`, `target-arch`;
+- compatibility: `api-version`, `target`, `target-version`, `target-arch`;
 - provenance: `open-source`, `author`, `source`, optional `info-url`, `description`;
 - delivery: `tarball-url` and optional `tarball-checksum` under the schema rules.
+
+The schema still permits optional `build-target` and `build-gtk` elements but marks both **deprecated and not used**. They may remain in legacy or generated metadata for compatibility with an established workflow. New plugin infrastructure should not introduce them unless a verified existing workflow requires preserving them.
 
 Do not assume ordering, requiredness, allowed values, or compatibility matching from this summary. Validate the generated file against the current XSD and compare it with current catalog entries for the same target family.
 
@@ -23,7 +25,8 @@ Do not assume ordering, requiredness, allowed values, or compatibility matching 
 
 - **Plugin version/release:** must agree across source, generated metadata, archive name/content, tag, and release notes.
 - **API version:** identifies the plugin API used to build the binary; select it from the actual header/library, not the OpenCPN application version.
-- **Target/build-target:** compatibility identifiers interpreted by plugin infrastructure. Preserve distinctions such as wxWidgets target variants.
+- **Target:** a compatibility identifier interpreted by plugin infrastructure. Preserve distinctions such as wxWidgets target variants.
+- **Deprecated build fields:** do not use `build-target` or `build-gtk` as new compatibility inputs. If an established generator still emits either field, verify the current XSD and workflow before retaining it; do not infer that the field affects matching.
 - **Target architecture:** describe the produced binary, not the build machine.
 - **Target Windows version:** derive from the verified build policy/toolchain and current metadata conventions; do not guess from the developer workstation.
 

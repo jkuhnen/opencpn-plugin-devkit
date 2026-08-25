@@ -95,7 +95,7 @@ CI/package helpers often run under POSIX shells even for a Windows-hosted checko
 
 ### Metadata compatibility
 
-A successful DLL link says nothing about catalog selection or installability. Verify `target`, `build-target` where used, `target-arch`, `target-version`, API version, archive layout, and checksum/URL using the current schema and host.
+A successful DLL link says nothing about catalog selection or installability. Verify `target`, `target-arch`, `target-version`, API version, archive layout, and checksum/URL using the current schema and host. The schema retains `build-target` and `build-gtk` only as deprecated, unused fields; do not introduce them in new infrastructure, and follow the legacy-compatibility note in [`PACKAGING.md`](PACKAGING.md) if an established generator still emits them.
 
 ### Missing submodules
 
