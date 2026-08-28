@@ -69,6 +69,42 @@ Centralize a small spacing scale based on logical/DIP units. Use compact maritim
 - Use icons as explanatory aids, never replacements for official chart symbols or authoritative values.
 - Do not recolor literal navigation symbols through the generic icon pipeline.
 
+### Canonical plugin icon assets and embedding
+
+The following is a **DevKit convention derived from verified OpenCPN host behavior**, not an upstream OpenCPN requirement.
+
+- Keep editable/canonical SVG masters under `assets/icons/`. Do not maintain a second hand-copied SVG payload in C++ source or a checked-in generated header.
+- When an icon must be embedded in the plugin binary, read the canonical SVG files during CMake configure and use `configure_file(... @ONLY)` to generate a C++11 header containing the SVG payload.
+- Add every source SVG used by the generated header to the directory `CMAKE_CONFIGURE_DEPENDS` property. A later icon edit must therefore trigger CMake regeneration on the next build.
+- Prefer compile-time embedding when the package does not install loose icon files or when relying on runtime asset paths would make deployment fragile.
+- Treat `GetPlugInBitmap()` as a stable plugin identity. OpenCPN copies the bitmap into its plugin container during plugin activation and does not generally re-query it merely because a later `SetColorScheme()` callback occurs. Use one theme-tolerant identity asset rather than assuming this bitmap dynamically tracks DAY/DUSK/NIGHT.
+- Treat toolbar imagery separately from plugin identity. Where verified for the target API/core version, a plugin may rebuild or replace toolbar bitmaps from `SetColorScheme()` to provide DAY/DUSK/NIGHT variants.
+- Do not infer that a successful build proves icon integration. Validate transparency, checked/unchecked state, DAY/DUSK/NIGHT, 100% and high-DPI scaling, and the plugin-manager identity in a real OpenCPN runtime.
+
+A typical configure-time embedding shape is:
+
+```cmake
+set(MYPLUGIN_ICON_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/assets/icons/myplugin.svg
+    ${CMAKE_CURRENT_SOURCE_DIR}/assets/icons/myplugin-white.svg
+)
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
+    ${MYPLUGIN_ICON_FILES}
+)
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/assets/icons/myplugin.svg
+    MYPLUGIN_ICON_DAY_SVG)
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/assets/icons/myplugin-white.svg
+    MYPLUGIN_ICON_WHITE_SVG)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/generated)
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/in-files/myplugin_icons.h.in
+    ${CMAKE_CURRENT_BINARY_DIR}/generated/myplugin_icons.h
+    @ONLY
+)
+```
+
+The generated directory is a build artifact and must not be committed.
+
 ## Accessibility and legibility
 
 - Never rely on color alone.
