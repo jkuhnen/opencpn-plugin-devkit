@@ -4,6 +4,8 @@
 
 This page defines a **DevKit convention** for centralized styling. OpenCPN's current plugin header verifies that plugins receive color-scheme changes and can request named colors from the global color table. Exact names, availability, and values are upstream/version dependent; inspect the target source and handle lookup failure.
 
+For vessel data presentation, pair this page with `MARITIME_HMI.md` and `DIGITAL_INSTRUMENTS.md`.
+
 ## Resolution order
 
 1. Use OpenCPN global colors for base window, text, and other host-defined roles where the target API supplies a suitable color.
@@ -33,7 +35,22 @@ Every plugin should define, at minimum:
 | `alarm` | verified alarm semantics only |
 | `literal-chart-color` | pass-through encoded chart/navigation color |
 
-Add tokens for disabled, unavailable, stale, success, separators, overlay halo, and graphs only when their semantics are documented. Do not alias warning/alarm colors to generic interaction colors.
+For digital instruments, also define semantic roles for:
+
+| Token | Purpose |
+| --- | --- |
+| `instrument-value` | primary numeric/textual operational value |
+| `instrument-unit` | unit adjacent to the primary value |
+| `instrument-label` | measurement identity such as `SOG`, `HDG`, `DEPTH` |
+| `instrument-secondary` | supporting values and qualifiers |
+| `instrument-scale` | inactive tape ticks / level track |
+| `instrument-fill` | neutral valid level fill |
+| `instrument-trend` | neutral valid trend line/area |
+| `stale` | stale-data distinction |
+| `unavailable` | no-data/unavailable distinction |
+| `invalid` | invalid/out-of-range distinction when not an operational alarm |
+
+Add tokens for disabled, success, separators, overlay halo, graphs and other roles only when their semantics are documented. Do not alias warning/alarm colors to generic interaction colors or ordinary instrument fill.
 
 ## DAY, DUSK, and NIGHT
 
@@ -44,7 +61,7 @@ Each token has an explicit value or derivation for all three schemes. On a schem
 3. invalidate pens, brushes, bitmaps, text metrics, and render caches that embed colors;
 4. refresh affected views using the documented host/wx mechanism.
 
-Transformations should reduce large-area luminance and decorative contrast progressively while retaining readable text, focus, selection, and warning/alarm distinction. Validate contrast visually in OpenCPN; do not claim certification from generic contrast ratios alone.
+Transformations should reduce large-area luminance and decorative contrast progressively while retaining readable text, focus, selection, warning/alarm distinction and primary instrument values. Secondary tape ticks, inactive level tracks and trend decoration should lose emphasis before primary values do. Validate contrast visually in OpenCPN; do not claim certification from generic contrast ratios alone.
 
 ## Interaction family
 
@@ -55,12 +72,34 @@ Chart Inspector's cool blue/cyan family is the current reference for hover, focu
 - Prefer host/wx system fonts and respect user/platform scaling.
 - Define roles such as title, section label, body, navigation value, unit, and metadata instead of point sizes at call sites.
 - Give important numeric values adequate size and stable alignment; keep units adjacent and explicit.
-- Avoid all-caps body text, decorative fonts, and weight-only state cues.
+- Use tabular/stable digit alignment where changing measurements would otherwise cause visual jitter, provided the chosen system font supports it or equivalent measured alignment is implemented.
+- Avoid all-caps body text, decorative fonts, fake seven-segment displays, and weight-only state cues.
 - Measure using the actual font and DPI before truncating or aligning.
 
 ## Spacing, radius, and density
 
 Centralize a small spacing scale based on logical/DIP units. Use compact maritime-tool density without crowding targets or values. Corner radii should be restrained and consistent; they communicate grouping, not decoration. Adapt padding and control size for touch only when the platform/task requires it.
+
+For instruments:
+
+- value hierarchy is more important than card decoration;
+- avoid drawing a separate bezel/card around every scalar value;
+- keep geometry stable during live updates;
+- reserve enough width for expected value, sign, unit and state text so updates do not continuously reflow nearby controls.
+
+## Digital instrument grammar
+
+The DevKit standardizes five reusable presentation primitives:
+
+- `Value`
+- `Level`
+- `Tape`
+- `Trend`
+- `State`
+
+Plugins should compose these primitives rather than inventing bespoke gauges for each sensor. See `DIGITAL_INSTRUMENTS.md` for selection rules, examples, validity handling and anti-patterns.
+
+By default do **not** use simulated round gauges, fake needles, gloss, 3D bezels, fake LCDs or decorative arcs that merely duplicate a number.
 
 ## Icons and pictograms
 
@@ -111,9 +150,9 @@ The generated directory is a build artifact and must not be committed.
 - Preserve visible keyboard focus and a logical tab order.
 - Check text/background and state boundaries in each OpenCPN scheme.
 - Support resizing, long translations, high DPI, and platform font differences.
-- Distinguish hover, focus, selection, disabled, stale, warning, alarm, and unknown states by at least one non-color cue.
+- Distinguish hover, focus, selection, disabled, stale, warning, alarm, unavailable, invalid and unknown states by at least one non-color cue.
 - Respect reduced-motion preferences where the platform exposes them; ordinary interactions do not blink.
 
 ## Implementation shape
 
-Use one style service/value object per plugin. Views request semantic colors, fonts, metrics, pens, and icons; they never choose raw values. Give the token set a small schema version so snapshots, cache keys, and migrations can identify changes. Unit-test token completeness and state distinctness; validate final appearance in the actual OpenCPN runtime.
+Use one style service/value object per plugin. Views request semantic colors, fonts, metrics, pens, icons and instrument roles; they never choose raw values. Give the token set a small schema version so snapshots, cache keys, and migrations can identify changes. Unit-test token completeness and state distinctness; validate final appearance in the actual OpenCPN runtime.

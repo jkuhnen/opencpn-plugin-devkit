@@ -19,6 +19,8 @@ Chart Inspector and Latitude Ruler share the selected CMake 3.15, C++11, API 1.1
 
 The placeholder registers one checkable toolbar tool, redraws its generated bitmap from a centralized OpenCPN DAY/DUSK/NIGHT palette, and removes the tool during `DeInit()`. This is enough to prove the skeleton without pretending to be an application.
 
+The template also includes `plugin/src/ui/digital_instrument_model.h`, a lightweight presentation-model template for plugins that expose vessel data such as heading, SOG, depth, batteries, tanks or engine information. It normalizes the DevKit's `Value / Level / Tape / Trend / State` instrument grammar and explicitly separates data validity from warning/alarm state. The header is a model/template, not a finished widget library; projects should compose wxWidgets/rendering components around it while following `docs/DIGITAL_INSTRUMENTS.md`, `docs/MARITIME_HMI.md` and `docs/DESIGN_SYSTEM.md`.
+
 The template does not contain Chart Inspector's experimental vector-query API, Latitude Ruler's overlay/rendering logic, provider-specific code, chart parsing, OpenGL, persistence, networking, device access, CI workflows, release automation, or production distribution configuration.
 
 API 1.18 is the initial compatibility baseline because both reference plugins use it successfully and pin the same `opencpn-libs` commit. It is not the newest upstream API and is not universally preferred. A project may deliberately upgrade after checking its minimum OpenCPN version, new base class/header, import library, ABI, metadata, and runtime matrix.
